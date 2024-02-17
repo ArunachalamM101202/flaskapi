@@ -132,6 +132,15 @@ def add_allergy():
     result = allergy_collection.insert_one(new_item)
     return jsonify({'message': 'Item added successfully', 'id': str(result.inserted_id)})
 
+@app.route('/email/<email_id>',methods=['GET'])
+def email_return(email_id):
+    patient = patient_collection.find_one({'Email':email_id})
+    if patient:
+        patient['_id']=str(patient['_id'])
+        return jsonify({'Patient_id':patient['Patient_id']})
+    else:
+        return jsonify({'result':'False'})
+
 #GET method to retrieve Insurance details of a patient using patient_id
 @app.route('/insurance/<patient_id>',methods=['GET'])
 def get_insurance(patient_id):
