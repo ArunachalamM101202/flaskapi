@@ -406,6 +406,26 @@ def lab():
         l['_id'] = str(l['_id'])
     return jsonify({'Lab': Lab})
 
+#Pushing notes into patient demographics 
+@app.route('/notes',methods=['POST'])
+def add_notes(patient_id):
+    data=request.json
+    patient_id=data['Patient_id']
+    note=patient_collection.find({'Patient_id':patient_id})
+    note.update_one({'_Patient_id':Patient_id},{'$set':{'Notes':data['Notes']}})
+    return jsonify({'message':'Updated successfully'})
+
+#Add an SOS data entry
+@app.route('/sos_add',methods=['POST'])
+def add_sos():
+    data = request.json
+    new_item ={
+        "Lattitude":data['Lattitude'],
+        "Longitude":data['Longitude'],
+        }
+    result = sos_collection.insert_one(new_item)
+    return jsonify({'message': 'Item added successfully', 'id': str(result.inserted_id)})
+
 
 
 if __name__ == '__main__':
